@@ -17,7 +17,7 @@
          data-ng-click="selectAll()"
          tabindex="-1"
          id="selectAll">
-        <span ng-class="::settings.selectedIconClasses"></span>
+        <span ng-class="::settings.allSelectIconClasses"></span>
         {{texts.checkAll}}
       </a>
     <li ng-if="settings.showUncheckAll">
@@ -25,7 +25,7 @@
          data-ng-click="deselectAll();"
          tabindex="-1"
          id="deselectAll">
-        <span ng-class="::settings.deselectedIconClasses"></span>
+        <span ng-class="::settings.allDeselectIconClasses"></span>
         {{texts.uncheckAll}}
       </a>
     </li>

@@ -80,8 +80,9 @@ export default function dropdownMultiselectController(
 		template: '{{getPropertyForObject(option, settings.displayProp)}}',
 		searchField: '$',
 		showAllSelectedText: false,
+		allSelectIconClasses: 'glyphicon glyphicon-ok',
+		allDeselectIconClasses: 'glyphicon glyphicon-remove',
 		selectedIconClasses: 'glyphicon glyphicon-ok',
-		deselectedIconClasses: 'glyphicon glyphicon-remove',
 		unselectedIconClasses: '',
 	};
 
