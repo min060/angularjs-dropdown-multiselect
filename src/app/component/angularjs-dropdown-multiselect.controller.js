@@ -93,6 +93,7 @@ export default function dropdownMultiselectController(
 		disableSearch: 'Disable search',
 		enableSearch: 'Enable search',
 		selectGroup: 'Select all:',
+		selectGroupSuffix: ' only',
 		allSelectedText: 'All',
 	};
 

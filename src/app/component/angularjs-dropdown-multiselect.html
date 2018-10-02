@@ -36,7 +36,7 @@
         ng-click="selectCurrentGroup(currentGroup)">
       <a ng-class="{'dropdown-selected-group': selectedGroup === currentGroup}"
          tabindex="-1">
-        {{::texts.selectGroup}} {{::getGroupLabel(currentGroup)}}
+        {{::texts.selectGroup}} {{::getGroupLabel(currentGroup)}} {{::texts.selectGroupSuffix}}
       </a>
     </li>
     <li ng-if="settings.selectByGroups && settings.showEnableSearchButton"
