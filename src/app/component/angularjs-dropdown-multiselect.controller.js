@@ -80,6 +80,10 @@ export default function dropdownMultiselectController(
 		template: '{{getPropertyForObject(option, settings.displayProp)}}',
 		searchField: '$',
 		showAllSelectedText: false,
+		allSelectIconClasses: 'glyphicon glyphicon-ok',
+		allDeselectIconClasses: 'glyphicon glyphicon-remove',
+		selectedIconClasses: 'glyphicon glyphicon-ok',
+		unselectedIconClasses: '',
 	};
 
 	const texts = {
@@ -93,6 +97,7 @@ export default function dropdownMultiselectController(
 		disableSearch: 'Disable search',
 		enableSearch: 'Enable search',
 		selectGroup: 'Select all:',
+		selectGroupSuffix: ' only',
 		allSelectedText: 'All',
 	};
 

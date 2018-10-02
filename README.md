@@ -45,3 +45,14 @@ When you create a new PR please make it against the develop branch when adding n
 ## Usage and Documentation
 See the documentation and examples in the GitHub pages:
 http://dotansimha.github.io/angularjs-dropdown-multiselect/
+
+-----
+
+# ビルド手順
+
+```bash
+$ npm i
+$ npm i -g bower
+$ bower install
+$ ./node_modules/.bin/gulp build:component
+```

@@ -17,7 +17,7 @@
          data-ng-click="selectAll()"
          tabindex="-1"
          id="selectAll">
-        <span class="glyphicon glyphicon-ok"></span>
+        <span ng-class="::settings.allSelectIconClasses"></span>
         {{texts.checkAll}}
       </a>
     <li ng-if="settings.showUncheckAll">
@@ -25,7 +25,7 @@
          data-ng-click="deselectAll();"
          tabindex="-1"
          id="deselectAll">
-        <span class="glyphicon glyphicon-remove"></span>
+        <span ng-class="::settings.allDeselectIconClasses"></span>
         {{texts.uncheckAll}}
       </a>
     </li>
@@ -36,7 +36,7 @@
         ng-click="selectCurrentGroup(currentGroup)">
       <a ng-class="{'dropdown-selected-group': selectedGroup === currentGroup}"
          tabindex="-1">
-        {{::texts.selectGroup}} {{::getGroupLabel(currentGroup)}}
+        {{::texts.selectGroup}} {{::getGroupLabel(currentGroup)}} {{::texts.selectGroupSuffix}}
       </a>
     </li>
     <li ng-if="settings.selectByGroups && settings.showEnableSearchButton"
@@ -100,7 +100,7 @@
           </label>
         </div>
         <span ng-if="!settings.checkBoxes"
-              data-ng-class="{'glyphicon glyphicon-ok': isChecked(option)}">
+              data-ng-class="{'{{::settings.selectedIconClasses}}': isChecked(option), '{{::settings.unselectedIconClasses}}': !isChecked(option)}">
         </span>
         <span dm-dropdown-static-include="{{settings.template}}"></span>
       </a>
@@ -126,7 +126,7 @@
           </label>
         </div>
         <span ng-if="!settings.checkBoxes"
-              data-ng-class="{'glyphicon glyphicon-ok': isChecked(option)}">
+              data-ng-class="{'{{::settings.selectedIconClasses}}': isChecked(option), '{{::settings.unselectedIconClasses}}': !isChecked(option)}">
         </span>
         <span ng-if="!settings.checkBoxes"
               dm-dropdown-static-include="{{settings.template}}"></span>
