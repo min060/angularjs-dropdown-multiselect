@@ -11,7 +11,7 @@
     </div>
   <ul class="dropdown-menu dropdown-menu-form"
       ng-if="open"
-      ng-style="{display: open ? 'block' : 'none', height : settings.scrollable ? settings.scrollableHeight : 'auto', overflow: 'auto' }">
+      ng-style="{display: open ? 'block' : 'none', 'max-height' : settings.scrollable ? settings.scrollableHeight : 'auto', overflow: 'auto' }">
     <li ng-if="settings.showCheckAll && settings.selectionLimit === 0">
       <a ng-keydown="keyDownLink($event)"
          data-ng-click="selectAll()"
