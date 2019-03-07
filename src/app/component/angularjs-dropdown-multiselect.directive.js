@@ -10,6 +10,7 @@ export default function dropdownMultiselectDirective() {
 			events: '=',
 			searchFilter: '=?',
 			translationTexts: '=',
+			onOpen: '&?',
 			disabled: '=',
 		},
 		transclude: {

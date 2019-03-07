@@ -172,7 +172,12 @@ export default function dropdownMultiselectController(
 	function toggleDropdown() {
 		if ($scope.open) {
 			$scope.close();
-		} else { $scope.open = true; }
+		} else {
+			$scope.open = true;
+			if ($scope.onOpen) {
+				$scope.onOpen();
+			}
+		}
 		if ($scope.settings.keyboardControls) {
 			if ($scope.open) {
 				if ($scope.settings.selectionLimit === 1 && $scope.settings.enableSearch) {

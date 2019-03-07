@@ -89,6 +89,7 @@
 				events: '=',
 				searchFilter: '=?',
 				translationTexts: '=',
+				onOpen: '&?',
 				disabled: '='
 			},
 			transclude: {
@@ -281,6 +282,9 @@
 				$scope.close();
 			} else {
 				$scope.open = true;
+				if ($scope.onOpen) {
+					$scope.onOpen();
+				}
 			}
 			if ($scope.settings.keyboardControls) {
 				if ($scope.open) {
