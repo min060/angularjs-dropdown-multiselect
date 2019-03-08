@@ -175,7 +175,7 @@ export default function dropdownMultiselectController(
 		} else {
 			$scope.open = true;
 			if ($scope.onOpen) {
-				$scope.onOpen();
+				$scope.onOpen({optins: $scope.options});
 			}
 		}
 		if ($scope.settings.keyboardControls) {
