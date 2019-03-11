@@ -61,6 +61,7 @@
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "gulp build:component",
 		"component": "./node_modules/.bin/gulp && ./node_modules/.bin/gulp build:component"
 	},
 	"repository": {
