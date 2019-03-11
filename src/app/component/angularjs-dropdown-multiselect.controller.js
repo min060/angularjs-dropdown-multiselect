@@ -87,8 +87,8 @@ export default function dropdownMultiselectController(
 	};
 
 	const texts = {
-		checkAll: 'Check All',
-		uncheckAll: 'Uncheck All',
+		checkAll: '全て選択',
+		uncheckAll: '選択解除',
 		selectionCount: 'checked',
 		selectionOf: '/',
 		searchPlaceholder: 'Search...',
