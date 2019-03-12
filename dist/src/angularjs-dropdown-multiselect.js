@@ -147,6 +147,17 @@
 		return index;
 	}
 
+	function getIndexByModelValue(collection, valueToFind) {
+		var index = -1;
+		collection.forEach(function (value, ind) {
+			if (value === valueToFind) {
+				index = ind;
+			}
+		});
+
+		return index;
+	}
+
 	function dropdownMultiselectController($scope, $element, $filter, $document) {
 		'ngInject';
 
@@ -167,6 +178,7 @@
 			scrollable: false,
 			scrollableHeight: '300px',
 			closeOnBlur: true,
+			modelProp: undefined,
 			displayProp: 'label',
 			enableSearch: false,
 			clearSearchOnClose: false,
@@ -447,16 +459,16 @@
 			var dontRemove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 			var fireSelectionChange = arguments[2];
 
-			var exists = void 0;
 			var indexOfOption = void 0;
 			if (angular.isDefined(settings.idProperty)) {
-				exists = getIndexByProperty($scope.selectedModel, option, settings.idProperty) !== -1;
 				indexOfOption = getIndexByProperty($scope.selectedModel, option, settings.idProperty);
+			} else if (angular.isDefined(settings.modelProp)) {
+				indexOfOption = getIndexByModelValue($scope.selectedModel, option[settings.modelProp]);
 			} else {
-				exists = $scope.selectedModel.indexOf(option) !== -1;
 				indexOfOption = $scope.selectedModel.indexOf(option);
 			}
 
+			var exists = indexOfOption !== -1;
 			if (!dontRemove && exists) {
 				$scope.selectedModel.splice(indexOfOption, 1);
 				$scope.externalEvents.onItemDeselect(option);
@@ -464,7 +476,11 @@
 					$scope.close();
 				}
 			} else if (!exists && ($scope.settings.selectionLimit === 0 || $scope.selectedModel.length < $scope.settings.selectionLimit)) {
-				$scope.selectedModel.push(option);
+				if ($scope.settings.modelProp && angular.isDefined(option[$scope.settings.modelProp])) {
+					$scope.selectedModel.push(option[$scope.settings.modelProp]);
+				} else {
+					$scope.selectedModel.push(option);
+				}
 				if (fireSelectionChange) {
 					$scope.externalEvents.onItemSelect(option);
 				}
@@ -476,7 +492,11 @@
 				}
 			} else if ($scope.settings.selectionLimit === 1 && !exists && $scope.selectedModel.length === $scope.settings.selectionLimit) {
 				$scope.selectedModel.splice(0, 1);
-				$scope.selectedModel.push(option);
+				if ($scope.settings.modelProp && angular.isDefined(option[$scope.settings.modelProp])) {
+					$scope.selectedModel.push(option[$scope.settings.modelProp]);
+				} else {
+					$scope.selectedModel.push(option);
+				}
 				if (fireSelectionChange) {
 					$scope.externalEvents.onItemSelect(option);
 				}
@@ -493,6 +513,9 @@
 		function isChecked(option) {
 			if (angular.isDefined(settings.idProperty)) {
 				return getIndexByProperty($scope.selectedModel, option, settings.idProperty) !== -1;
+			}
+			if (angular.isDefined(settings.modelProp)) {
+				return getIndexByModelValue($scope.selectedModel, option[settings.modelProp]) !== -1;
 			}
 			return $scope.selectedModel.indexOf(option) !== -1;
 		}
