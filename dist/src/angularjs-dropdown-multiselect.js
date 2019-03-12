@@ -50,9 +50,13 @@
 
 	var _angularjsDropdownMultiselect2 = _interopRequireDefault(_angularjsDropdownMultiselect);
 
+	var _angularjsDropdownMultiselect3 = __webpack_require__(2);
+
+	var _angularjsDropdownMultiselect4 = _interopRequireDefault(_angularjsDropdownMultiselect3);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	angular.module('angularjs-dropdown-multiselect', []).directive('dmDropdownStaticInclude', ["$compile", function ($compile) {
+	angular.module('angularjs-dropdown-multiselect', []).constant('ngDropdownMultiselectConfig', _angularjsDropdownMultiselect2.default).directive('dmDropdownStaticInclude', ["$compile", function ($compile) {
 		'ngInject';
 
 		return function directive(scope, element, attrs) {
@@ -60,10 +64,78 @@
 			var contents = element.html(template).contents();
 			$compile(contents)(scope);
 		};
-	}]).directive('ngDropdownMultiselect', _angularjsDropdownMultiselect2.default);
+	}]).directive('ngDropdownMultiselect', _angularjsDropdownMultiselect4.default);
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = {
+		events: {
+			onItemSelect: angular.noop,
+			onItemDeselect: angular.noop,
+			onSelectAll: angular.noop,
+			onDeselectAll: angular.noop,
+			onInitDone: angular.noop,
+			onMaxSelectionReached: angular.noop,
+			onSelectionChanged: angular.noop,
+			onClose: angular.noop
+		},
+		settings: {
+			dynamicTitle: true,
+			scrollable: false,
+			scrollableHeight: '300px',
+			closeOnBlur: true,
+			modelProp: undefined,
+			displayProp: 'label',
+			enableSearch: false,
+			clearSearchOnClose: false,
+			selectionLimit: 0,
+			showCheckAll: true,
+			showUncheckAll: true,
+			showEnableSearchButton: false,
+			closeOnSelect: false,
+			buttonClasses: 'btn btn-default',
+			closeOnDeselect: false,
+			groupBy: undefined,
+			checkBoxes: false,
+			groupByTextProvider: null,
+			smartButtonMaxItems: 0,
+			smartButtonTextConverter: angular.noop,
+			styleActive: false,
+			selectedToTop: false,
+			keyboardControls: false,
+			template: '{{getPropertyForObject(option, settings.displayProp)}}',
+			searchField: '$',
+			showAllSelectedText: false,
+			allSelectIconClasses: 'glyphicon glyphicon-ok',
+			allDeselectIconClasses: 'glyphicon glyphicon-remove',
+			selectedIconClasses: 'glyphicon glyphicon-ok',
+			unselectedIconClasses: ''
+		},
+		texts: {
+			checkAll: '全て選択',
+			uncheckAll: '選択解除',
+			selectionCount: 'checked',
+			selectionOf: '/',
+			searchPlaceholder: 'Search...',
+			buttonDefaultText: 'Select',
+			dynamicButtonTextSuffix: 'checked',
+			disableSearch: 'Disable search',
+			enableSearch: 'Enable search',
+			selectGroup: 'Select all:',
+			selectGroupSuffix: ' only',
+			allSelectedText: 'All'
+		}
+	};
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73,7 +145,7 @@
 	});
 	exports.default = dropdownMultiselectDirective;
 
-	var _angularjsDropdownMultiselect = __webpack_require__(2);
+	var _angularjsDropdownMultiselect = __webpack_require__(3);
 
 	var _angularjsDropdownMultiselect2 = _interopRequireDefault(_angularjsDropdownMultiselect);
 
@@ -101,12 +173,12 @@
 	}
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 	'use strict';
 
-	dropdownMultiselectController.$inject = ["$scope", "$element", "$filter", "$document"];
+	dropdownMultiselectController.$inject = ["$scope", "$element", "$filter", "$document", "ngDropdownMultiselectConfig"];
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
@@ -147,75 +219,32 @@
 		return index;
 	}
 
-	function dropdownMultiselectController($scope, $element, $filter, $document) {
+	function getIndexByModelValue(collection, valueToFind) {
+		var index = -1;
+		collection.forEach(function (value, ind) {
+			if (value === valueToFind) {
+				index = ind;
+			}
+		});
+
+		return index;
+	}
+
+	function dropdownMultiselectController($scope, $element, $filter, $document, ngDropdownMultiselectConfig) {
 		'ngInject';
 
 		var $dropdownTrigger = $element.children()[0];
-		var externalEvents = {
-			onItemSelect: angular.noop,
-			onItemDeselect: angular.noop,
-			onSelectAll: angular.noop,
-			onDeselectAll: angular.noop,
-			onInitDone: angular.noop,
-			onMaxSelectionReached: angular.noop,
-			onSelectionChanged: angular.noop,
-			onClose: angular.noop
-		};
-
-		var settings = {
-			dynamicTitle: true,
-			scrollable: false,
-			scrollableHeight: '300px',
-			closeOnBlur: true,
-			displayProp: 'label',
-			enableSearch: false,
-			clearSearchOnClose: false,
-			selectionLimit: 0,
-			showCheckAll: true,
-			showUncheckAll: true,
-			showEnableSearchButton: false,
-			closeOnSelect: false,
-			buttonClasses: 'btn btn-default',
-			closeOnDeselect: false,
-			groupBy: undefined,
-			checkBoxes: false,
-			groupByTextProvider: null,
-			smartButtonMaxItems: 0,
-			smartButtonTextConverter: angular.noop,
-			styleActive: false,
-			selectedToTop: false,
-			keyboardControls: false,
-			template: '{{getPropertyForObject(option, settings.displayProp)}}',
-			searchField: '$',
-			showAllSelectedText: false,
-			allSelectIconClasses: 'glyphicon glyphicon-ok',
-			allDeselectIconClasses: 'glyphicon glyphicon-remove',
-			selectedIconClasses: 'glyphicon glyphicon-ok',
-			unselectedIconClasses: ''
-		};
-
-		var texts = {
-			checkAll: '全て選択',
-			uncheckAll: '選択解除',
-			selectionCount: 'checked',
-			selectionOf: '/',
-			searchPlaceholder: 'Search...',
-			buttonDefaultText: 'Select',
-			dynamicButtonTextSuffix: 'checked',
-			disableSearch: 'Disable search',
-			enableSearch: 'Enable search',
-			selectGroup: 'Select all:',
-			selectGroupSuffix: ' only',
-			allSelectedText: 'All'
-		};
+		var externalEvents = {};
+		var settings = {};
+		var texts = {};
 
 		var input = {
 			searchFilter: $scope.searchFilter || ''
 		};
 
-		angular.extend(settings, $scope.extraSettings || []);
-		angular.extend(externalEvents, $scope.events || []);
-		angular.extend(texts, $scope.translationTexts);
+		angular.extend(settings, ngDropdownMultiselectConfig.settings, $scope.extraSettings || []);
+		angular.extend(externalEvents, ngDropdownMultiselectConfig.events, $scope.events || []);
+		angular.extend(texts, ngDropdownMultiselectConfig.texts, $scope.translationTexts);
 
 		if (settings.closeOnBlur) {
 			$document.on('click', function (e) {
@@ -447,16 +476,16 @@
 			var dontRemove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 			var fireSelectionChange = arguments[2];
 
-			var exists = void 0;
 			var indexOfOption = void 0;
 			if (angular.isDefined(settings.idProperty)) {
-				exists = getIndexByProperty($scope.selectedModel, option, settings.idProperty) !== -1;
 				indexOfOption = getIndexByProperty($scope.selectedModel, option, settings.idProperty);
+			} else if (angular.isDefined(settings.modelProp)) {
+				indexOfOption = getIndexByModelValue($scope.selectedModel, option[settings.modelProp]);
 			} else {
-				exists = $scope.selectedModel.indexOf(option) !== -1;
 				indexOfOption = $scope.selectedModel.indexOf(option);
 			}
 
+			var exists = indexOfOption !== -1;
 			if (!dontRemove && exists) {
 				$scope.selectedModel.splice(indexOfOption, 1);
 				$scope.externalEvents.onItemDeselect(option);
@@ -464,7 +493,11 @@
 					$scope.close();
 				}
 			} else if (!exists && ($scope.settings.selectionLimit === 0 || $scope.selectedModel.length < $scope.settings.selectionLimit)) {
-				$scope.selectedModel.push(option);
+				if ($scope.settings.modelProp && angular.isDefined(option[$scope.settings.modelProp])) {
+					$scope.selectedModel.push(option[$scope.settings.modelProp]);
+				} else {
+					$scope.selectedModel.push(option);
+				}
 				if (fireSelectionChange) {
 					$scope.externalEvents.onItemSelect(option);
 				}
@@ -476,7 +509,11 @@
 				}
 			} else if ($scope.settings.selectionLimit === 1 && !exists && $scope.selectedModel.length === $scope.settings.selectionLimit) {
 				$scope.selectedModel.splice(0, 1);
-				$scope.selectedModel.push(option);
+				if ($scope.settings.modelProp && angular.isDefined(option[$scope.settings.modelProp])) {
+					$scope.selectedModel.push(option[$scope.settings.modelProp]);
+				} else {
+					$scope.selectedModel.push(option);
+				}
 				if (fireSelectionChange) {
 					$scope.externalEvents.onItemSelect(option);
 				}
@@ -493,6 +530,9 @@
 		function isChecked(option) {
 			if (angular.isDefined(settings.idProperty)) {
 				return getIndexByProperty($scope.selectedModel, option, settings.idProperty) !== -1;
+			}
+			if (angular.isDefined(settings.modelProp)) {
+				return getIndexByModelValue($scope.selectedModel, option[settings.modelProp]) !== -1;
 			}
 			return $scope.selectedModel.indexOf(option) !== -1;
 		}

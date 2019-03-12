@@ -54,5 +54,5 @@ http://dotansimha.github.io/angularjs-dropdown-multiselect/
 $ npm i
 $ npm i -g bower
 $ bower install
-$ ./node_modules/.bin/gulp build:component
+$ npm run build
 ```
