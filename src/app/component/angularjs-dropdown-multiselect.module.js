@@ -1,6 +1,8 @@
+import dropdownConfig from './angularjs-dropdown-multiselect.config';
 import dropdownDirective from './angularjs-dropdown-multiselect.directive';
 
 angular.module('angularjs-dropdown-multiselect', [])
+.constant('ngDropdownMultiselectConfig', dropdownConfig)
 .directive('dmDropdownStaticInclude', ($compile) => {
 	'ngInject';
 

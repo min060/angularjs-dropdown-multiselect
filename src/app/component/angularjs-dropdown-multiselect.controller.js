@@ -50,76 +50,22 @@ export default function dropdownMultiselectController(
 		$element,
 		$filter,
 		$document,
+		ngDropdownMultiselectConfig,
 ) {
 	'ngInject';
 
 	const $dropdownTrigger = $element.children()[0];
-	const externalEvents = {
-		onItemSelect: angular.noop,
-		onItemDeselect: angular.noop,
-		onSelectAll: angular.noop,
-		onDeselectAll: angular.noop,
-		onInitDone: angular.noop,
-		onMaxSelectionReached: angular.noop,
-		onSelectionChanged: angular.noop,
-		onClose: angular.noop,
-	};
-
-	const settings = {
-		dynamicTitle: true,
-		scrollable: false,
-		scrollableHeight: '300px',
-		closeOnBlur: true,
-		modelProp: undefined,
-		displayProp: 'label',
-		enableSearch: false,
-		clearSearchOnClose: false,
-		selectionLimit: 0,
-		showCheckAll: true,
-		showUncheckAll: true,
-		showEnableSearchButton: false,
-		closeOnSelect: false,
-		buttonClasses: 'btn btn-default',
-		closeOnDeselect: false,
-		groupBy: undefined,
-		checkBoxes: false,
-		groupByTextProvider: null,
-		smartButtonMaxItems: 0,
-		smartButtonTextConverter: angular.noop,
-		styleActive: false,
-		selectedToTop: false,
-		keyboardControls: false,
-		template: '{{getPropertyForObject(option, settings.displayProp)}}',
-		searchField: '$',
-		showAllSelectedText: false,
-		allSelectIconClasses: 'glyphicon glyphicon-ok',
-		allDeselectIconClasses: 'glyphicon glyphicon-remove',
-		selectedIconClasses: 'glyphicon glyphicon-ok',
-		unselectedIconClasses: '',
-	};
-
-	const texts = {
-		checkAll: '全て選択',
-		uncheckAll: '選択解除',
-		selectionCount: 'checked',
-		selectionOf: '/',
-		searchPlaceholder: 'Search...',
-		buttonDefaultText: 'Select',
-		dynamicButtonTextSuffix: 'checked',
-		disableSearch: 'Disable search',
-		enableSearch: 'Enable search',
-		selectGroup: 'Select all:',
-		selectGroupSuffix: ' only',
-		allSelectedText: 'All',
-	};
+	const externalEvents = {};
+	const settings = {};
+	const texts = {};
 
 	const input = {
 		searchFilter: $scope.searchFilter || '',
 	};
 
-	angular.extend(settings, $scope.extraSettings || []);
-	angular.extend(externalEvents, $scope.events || []);
-	angular.extend(texts, $scope.translationTexts);
+	angular.extend(settings, ngDropdownMultiselectConfig.settings, $scope.extraSettings || []);
+	angular.extend(externalEvents, ngDropdownMultiselectConfig.events, $scope.events || []);
+	angular.extend(texts, ngDropdownMultiselectConfig.texts, $scope.translationTexts);
 
 	if (settings.closeOnBlur) {
 		$document.on('click', (e) => {
