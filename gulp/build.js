@@ -132,7 +132,7 @@ gulp.task('build.component.minified', ['compile:component'], function () {
 		.pipe(concat({ path: 'angularjs-dropdown-multiselect.min.js' }))
 		.pipe($.sourcemaps.init())
 		.pipe($.uglify({ preserveComments: $.uglifySaveLicense })).on('error', conf.errorHandler('Uglify'))
-		.pipe($.sourcemaps.write('maps'))
+		// .pipe($.sourcemaps.write('maps'))
 		.pipe(jsFilter.restore)
 		.pipe(cssFilter)
 		.pipe($.cssnano())
