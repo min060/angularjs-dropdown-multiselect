@@ -56,3 +56,23 @@ $ npm i -g bower
 $ bower install
 $ npm run build
 ```
+
+# 環境構築(Centos7)
+
+```bash
+sudo docker run -it -d --name centos7 centos:centos7
+sudo docker exec -it centos7 /bin/sh
+
+$ yum install git -y
+$ yum install which bash -y
+$ curl -sL https://rpm.nodesource.com/setup_7.x | bash -
+$ yum install nodejs -y
+
+$ git clone https://github.com/verybestjp/angularjs-dropdown-multiselect.git
+$ cd angularjs-dropdown-multiselect
+$ yum install make gcc-c++ bzip2 -y
+$ npm install
+$ npm install -g bower
+$ bower install --allow-root
+$ npm run build
+```
