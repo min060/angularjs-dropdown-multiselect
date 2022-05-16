@@ -71,6 +71,7 @@ $ yum install nodejs -y
 $ git clone https://github.com/verybestjp/angularjs-dropdown-multiselect.git
 $ cd angularjs-dropdown-multiselect
 $ yum install make gcc-c++ bzip2 -y
+$ npm install -g npm@6.14.17
 $ npm install
 $ npm install -g bower
 $ bower install --allow-root
