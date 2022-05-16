@@ -63,9 +63,6 @@
 		"type": "git",
 		"url": "git+https://github.com/dotansimha/angularjs-dropdown-multiselect.git"
 	},
-	"engines": {
-		"node": ">=0.10.10"
-	},
 	"main": "dist/angularjs-dropdown-multiselect.min.js",
 	"keywords": [
 		"angular",
