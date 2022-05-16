@@ -11,15 +11,16 @@ var $ = require('gulp-load-plugins')();
 var wiredep = require('wiredep').stream;
 var _ = require('lodash');
 
-gulp.task('styles-reload', ['styles'], function() {
-  return buildStyles()
-    .pipe(browserSync.stream());
-});
-
 gulp.task('styles', function() {
   return buildStyles();
 });
 
+gulp.task('styles-reload', gulp.series(['styles'], function() {
+  return buildStyles()
+    .pipe(browserSync.stream());
+}));
+
+const sass = require('gulp-sass')(require('node-sass'));
 var buildStyles = function() {
   var sassOptions = {
     outputStyle: 'expanded',
@@ -27,9 +28,9 @@ var buildStyles = function() {
   };
 
   var injectFiles = gulp.src([
-    path.join(conf.paths.src, conf.paths.cssRoot + '**/*.scss'),
-    path.join('!' + conf.paths.src, '/app/index.scss'),
-		path.join('!' + conf.paths.src, '/app/component/index.scss'),
+    path.join('src/app/**/*.scss'),
+    path.join('!' + 'src/app/index.scss'),
+		path.join('!' + 'src/app/component/index.scss'),
   ], { read: false });
 
   var injectOptions = {
@@ -48,7 +49,7 @@ var buildStyles = function() {
     .pipe($.inject(injectFiles, injectOptions))
     .pipe(wiredep(_.extend({}, conf.wiredep)))
     .pipe($.sourcemaps.init())
-    .pipe($.sass(sassOptions)).on('error', conf.errorHandler('Sass'))
+    .pipe(sass(sassOptions)).on('error', conf.errorHandler('Sass'))
     .pipe($.autoprefixer()).on('error', conf.errorHandler('Autoprefixer'))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/app/')));

@@ -2,7 +2,6 @@
 
 var path = require('path');
 var gulp = require('gulp');
-var runSequence = require('run-sequence');
 var concat = require('gulp-concat');
 var conf = require('./conf');
 
@@ -28,7 +27,7 @@ gulp.task('partials', function() {
     .pipe(gulp.dest(conf.paths.tmp + '/partials/'));
 });
 
-gulp.task('html', ['inject', 'partials'], function() {
+gulp.task('html', gulp.series(['inject', 'partials'], function() {
 	var partialsInjectFile = gulp.src(path.join(conf.paths.tmp, '/partials/templateCacheHtml.js'), { read: false });
 	var partialsInjectOptions = {
 		starttag: '<!-- inject:partials -->',
@@ -64,7 +63,7 @@ gulp.task('html', ['inject', 'partials'], function() {
     .pipe(htmlFilter.restore)
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')))
     .pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }));
-});
+}));
 
 // Only applies for fonts from bower dependencies
 // Custom fonts are handled by the "other" task
@@ -96,7 +95,7 @@ gulp.task('clean', function() {
 	return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')]);
 });
 
-gulp.task('build', ['html', 'fonts', 'other']);
+gulp.task('build', gulp.series(['html', 'fonts', 'other']));
 
 gulp.task('conf:component', function(cb) {
 	conf.paths.src = 'src/app/component';
@@ -111,15 +110,15 @@ gulp.task('conf:component', function(cb) {
 	cb();
 });
 
-gulp.task('clean:component', ['conf:component'], function() {
+gulp.task('clean:component', gulp.series(['conf:component'], function() {
 	return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')]);
-});
+}));
 
-gulp.task('compile:component', ['clean:component'], function(cb) {
-	runSequence(['scripts', 'styles', 'partials'], cb);
-});
+gulp.task('compile:component', gulp.series(['clean:component', gulp.parallel(['scripts', 'styles', 'partials'])], function(cb) {
+  cb();
+}));
 
-gulp.task('build.component.minified', ['compile:component'], function () {
+gulp.task('build.component.minified', gulp.series(['compile:component'], function () {
 	var jsFilter = $.filter('**/*.js', { restore: true });
 	var cssFilter = $.filter('**/*.css', { restore: true });
 
@@ -139,9 +138,9 @@ gulp.task('build.component.minified', ['compile:component'], function () {
 		.pipe(cssFilter.restore)
 		.pipe(gulp.dest(path.join(conf.paths.dist, '/')))
 		.pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }));
-});
+}));
 
-gulp.task('build.component', ['compile:component'], function () {
+gulp.task('build.component', gulp.series(['compile:component'], function () {
 	var jsFilter = $.filter('**/*.js', { restore: true });
 	var cssFilter = $.filter('**/*.css', { restore: true });
 
@@ -158,6 +157,6 @@ gulp.task('build.component', ['compile:component'], function () {
 		.pipe(cssFilter.restore)
 		.pipe(gulp.dest(path.join(conf.paths.dist, '/src')))
 		.pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }));
-});
+}));
 
-gulp.task('build:component', ['build.component.minified', 'build.component']);
+gulp.task('build:component', gulp.series(['build.component.minified']));
