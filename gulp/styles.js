@@ -20,7 +20,7 @@ gulp.task('styles-reload', gulp.series(['styles'], function() {
     .pipe(browserSync.stream());
 }));
 
-const sass = require('gulp-sass')(require('node-sass'));
+const sass = require('gulp-sass')(require('sass'));
 var buildStyles = function() {
   var sassOptions = {
     outputStyle: 'expanded',
@@ -49,7 +49,7 @@ var buildStyles = function() {
     .pipe($.inject(injectFiles, injectOptions))
     .pipe(wiredep(_.extend({}, conf.wiredep)))
     .pipe($.sourcemaps.init())
-    .pipe(sass(sassOptions)).on('error', conf.errorHandler('Sass'))
+    .pipe(sass.sync(sassOptions)).on('error', conf.errorHandler('Sass'))
     .pipe($.autoprefixer()).on('error', conf.errorHandler('Autoprefixer'))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/app/')));
