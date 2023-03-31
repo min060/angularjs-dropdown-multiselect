@@ -12,6 +12,7 @@ export default function dropdownMultiselectDirective() {
 			translationTexts: '=',
 			onOpen: '&?',
 			disabled: '=',
+			useExternalFilter: '=?',
 		},
 		transclude: {
 			toggleDropdown: '?toggleDropdown',
