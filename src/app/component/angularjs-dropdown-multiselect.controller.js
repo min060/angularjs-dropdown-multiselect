@@ -452,7 +452,6 @@ export default function dropdownMultiselectController(
 	}
 
 	function getFilter(searchFilter) {
-		console.log(`searchFilter: ${searchFilter}, useExternal: ${$scope.useExternalFilter}`);
 		if ($scope.useExternalFilter) {
 			return;
 		}
